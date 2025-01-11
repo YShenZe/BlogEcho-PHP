@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>回响 - 申请申请</title>
+    <link href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* 自定义颜色和阴影 */
+        .bg-custom-blue {
+            background-color: #4A90E2;
+        }
+        .bg-custom-blue-light {
+            background-color: #B3D7F5;
+        }
+        .text-custom-blue {
+            color: #4A90E2;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+<!-- 顶栏 -->
+    <header class="bg-blue-600 text-white p-4">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center">
+                <i class="fa fa-bullhorn text-xl mr-2"></i>
+                <h1 class="text-2xl font-semibold">回响</h1>
+            </div>
+
+            <button class="lg:hidden text-white" id="menu-toggle">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- 侧边导航栏（从左侧展开） -->
+    <div id="sidebar" class="fixed inset-0 bg-gray-800 bg-opacity-75 z-50 transform -translate-x-full lg:hidden transition-transform duration-300">
+        <div class="w-64 h-full bg-blue-600 text-white p-6">
+            <div class="flex justify-end">
+                <button id="close-menu" class="text-white">
+                    <i class="fa fa-times text-2xl"></i>
+                </button>
+            </div>
+
+            <nav class="mt-8 space-y-6">
+                <a href="https://blogecho.zeimg.top/record_form.html" class="flex items-center space-x-3 hover:bg-blue-500 px-4 py-2 rounded-md">
+                    <i class="fa fa-edit"></i>
+                    <span>申请加入我们</span>
+                </a>
+                <a href="https://blogecho.zeimg.top/list.php" class="flex items-center space-x-3 hover:bg-blue-500 px-4 py-2 rounded-md">
+                    <i class="fa fa-search"></i>
+                    <span>查询回响号</span>
+                </a>
+                <a href="https://blogecho.zeimg.top/announcement.html" class="flex items-center space-x-3 hover:bg-blue-500 px-4 py-2 rounded-md">
+                    <i class="fa fa-bullhorn"></i>
+                    <span>站点公告</span>
+                </a>
+                <a href="https://blogecho.zeimg.top/admin_login.html" class="flex items-center space-x-3 hover:bg-yellow-500 px-4 py-2 rounded-md">
+                    <i class="fa fa-shield"></i>
+                    <span>管理员登录</span>
+                </a>
+                <a href="https://blogecho.zeimg.top/about.html" class="flex items-center space-x-3 hover:bg-green-500 px-4 py-2 rounded-md">
+                    <i class="fa fa-info-circle"></i>
+                    <span>关于本站点</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- 主体内容 -->
+    <main class="pt-2 pb-3">
+<div class="max-w-4xl mx-auto p-6 shadow-lg rounded-lg mt-10">
+<hr/>
+            <!-- 注意和申请要求提示 -->
+            <div class="p-4 mb-4 text-blue-800 bg-blue-100 rounded-lg">
+                <strong>注意：</strong>提交申请后3天内将完成审核。
+            </div>
+
+            <div class="p-4 mb-6 text-red-800 bg-red-100 rounded-lg">
+                <strong>申请要求：</strong>
+                <ul class="list-disc list-inside text-sm">
+                    <li>1. 站点内容要求有一定质量，部分免费二级域名不可申请。</li>
+                    <li>2. 要求网站搭建时间一年以上，博客/论坛要求文章/帖子10篇以上。</li>
+                    <li>3. 要求网站类型为博客、个人网站、非企业类内容管理网站、个人门户网站。</li>
+                    <li>4.要求部署了可信得SSL证书、开启强制HTTPS。</li>
+                </ul>
+                <br />
+                <p>具体看<a href="https://blogecho.zeimg.top/announcement.html" class="text-blue-600 hover:underline">申请详情</a></p>
+            </div>
+
+            <!-- 申请表单 -->
+            <form action="submit_record.php" method="post" class="space-y-6">
+
+                <div>
+                    <label for="site_name" class="block text-sm font-medium text-gray-700 mb-2">*网站名:</label>
+                    <input type="text" id="site_name" name="site_name" required
+                        class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-custom-blue focus:outline-none transition">
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">*邮箱:</label>
+                    <input type="email" id="email" name="email" required
+                        class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-custom-blue focus:outline-none transition">
+                </div>
+
+                <div>
+                    <label for="url" class="block text-sm font-medium text-gray-700 mb-2">*网址:</label>
+                    <input type="url" id="url" name="url" required
+                        class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-custom-blue focus:outline-none transition">
+                </div>
+
+                <div>
+                    <label for="rssurl" class="block text-sm font-medium text-gray-700 mb-2">网站Rss链接:</label>
+                    <input type="url" id="rssurl" name="rssurl"
+                        class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-custom-blue focus:outline-none transition">
+                </div>
+
+                <div>
+                    <label for="site_description" class="block text-sm font-medium text-gray-700 mb-2">*网站描述:</label>
+                    <textarea id="site_description" name="site_description" required rows="4"
+                        class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-custom-blue focus:outline-none transition"></textarea>
+                </div>
+
+                <div class="text-sm text-gray-500">
+                    提交前，请再次确认你申请的站点符合申请要求。
+                </div>
+
+                <div class="flex justify-between items-center">
+                    <button type="submit"
+                        class="px-6 py-2 bg-custom-blue text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300">
+                        提交
+                    </button>
+                    <a href="https://blogecho.zeimg.top" class="text-blue-600 hover:underline text-sm">
+                        返回首页
+                    </a>
+                </div>
+            </form>
+
+            <div class="text-center text-gray-500 text-sm mt-6">
+                &copy; 2024 BlogEcho。
+            </div>
+            </div>
+    </main>
+
+    <script>
+        // 控制侧边菜单的展开和收起
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const closeMenu = document.getElementById('close-menu');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('translate-x-0');
+        });
+
+        closeMenu.addEventListener('click', () => {
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('-translate-x-full');
+        });
+    </script>
+</body>
+
+</html>

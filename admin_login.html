@@ -1,0 +1,60 @@
+<!--本文件是 回响 的一部分。
+
+回响 是自由软件：你可以再分发之和/或依照由自由软件基金会发布的 GNU 通用公共许可证修改之，无论是版本 3 许可证，还是（按你的决定）任何以后版都可以。
+
+发布 回响 是希望它能有用，但是并无保障；甚至连可销售和符合某个特定的目的都不保证。请参看 GNU 通用公共许可证，了解详情。
+
+你应该随程序获得一份 GNU 通用公共许可证的副本。如果没有，请看 <https://www.gnu.org/licenses/>。
+
+本程序使用了附加条款。如要获取附加条款，请看 <https://blog.BlogEcho.com/2024/07/19/85.html>，或者查看随附的 ADDITIONAL-LICENSE.txt。-->
+
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>回响 - 管理员登录</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+     <link href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+
+
+<body class="bg-gray-50 text-gray-900">
+
+    <div class="flex items-center justify-center min-h-screen px-6 py-12">
+        <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-semibold text-center mb-6">回响 - 管理员登录</h1>
+
+            <form action="admin_login.php" method="post">
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-medium text-gray-700">用户名:</label>
+                    <input type="text" id="username" name="username" required
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:outline-none" />
+                </div>
+
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-gray-700">密码:</label>
+                    <input type="password" id="password" name="password" required
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:outline-none" />
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <input type="submit" value="🛡️ 登录"
+                        class="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" />
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="https://blogecho.zeimg.top" class="text-blue-600 hover:text-blue-800">返回首页</a>
+                </div>
+            </form>
+
+            <div class="mt-6 text-center text-sm text-gray-500">
+                &copy; 2024 BlogEcho.
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html
