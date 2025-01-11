@@ -52,3 +52,6 @@ CREATE TABLE reports (
 注意，上面的“admin”和“admin123”是后期登录管理后台的用户名和密码。
 
 然后把所有文件移动到网站目录，给所有PHP文件上写好数据库信息即可访问了。
+
+# LICENSE
+遵循上游，使用GNU GENERAL PUBLIC LICENSE开源
