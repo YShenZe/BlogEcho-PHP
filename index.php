@@ -79,18 +79,15 @@
     <div class="max-w-7xl mx-auto px-4 py-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-6">
             <?php 
-            // 获取和遍历数据
             $apiUrl = 'http://127.0.0.1:5000/api';
             $response = file_get_contents($apiUrl);
             $data = json_decode($response, true);
 
-            // 检查数据是否存在
             if (empty($data['data'])) {
                 echo "没有获取到RSS数据！";
                 exit;
             }
 
-            // 定义字数限制函数
             function truncate_text($text, $max_length = 100) {
                 if (mb_strlen($text, 'UTF-8') > $max_length) {
                     return mb_substr($text, 0, $max_length, 'UTF-8') . '...';
@@ -98,7 +95,6 @@
                 return $text;
             }
 
-            // 修订后的 clean_text 函数
             function clean_text($text) {
                 $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
                 $text = strip_tags($text);
@@ -107,7 +103,6 @@
                 return $text;
             }
 
-            // 遍历 RSS 数据
             foreach ($data['data'] as $key => $items): 
                 foreach ($items as $item): 
             ?>
