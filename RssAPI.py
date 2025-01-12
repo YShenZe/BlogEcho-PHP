@@ -32,9 +32,9 @@ def get_db_connection():
     try:
         connection = mysql.connector.connect(
             host=os.getenv('DB_HOST', 'localhost'),
-            user=os.getenv('DB_USER', 'blogecho_zeimg_t'),
-            password=os.getenv('DB_PASSWORD', 'PQiatCJ1CEdsS5nc'),
-            database=os.getenv('DB_NAME', 'blogecho_zeimg_t'),
+            user=os.getenv('DB_USER', '数据库用户名'),
+            password=os.getenv('DB_PASSWORD', '数据库密码'),
+            database=os.getenv('DB_NAME', '数据库名'),
             use_pure=True,
             connection_timeout=10,
             auth_plugin='mysql_native_password'
