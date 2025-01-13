@@ -62,27 +62,38 @@ def get_rss_urls():
         logger.error(f"Database query failed: {e}")
         return []
 
-def parse_rss_xml(rss_xml):
+def parse_rss_or_atom(feed_xml):
     try:
-        soup = BeautifulSoup(rss_xml, 'lxml-xml')
-        channel = soup.find('channel')
-        if not channel:
-            logger.warning("Invalid RSS XML: no channel element found.")
-            return []
-
+        soup = BeautifulSoup(feed_xml, 'lxml-xml')
         items = []
-        for item in channel.find_all('item'):
-            data = {
-                'title': item.title.text if item.title else '',
-                'link': item.link.text if item.link else '',
-                'description': item.description.text if item.description else '',
-                'pubDate': item.pubDate.text if item.pubDate else ''
-            }
-            items.append(data)
 
+        channel = soup.find('channel')
+        if channel:
+            for item in channel.find_all('item'):
+                data = {
+                    'title': item.title.text if item.title else '',
+                    'link': item.link.text if item.link else '',
+                    'description': item.description.text if item.description else '',
+                    'pubDate': item.pubDate.text if item.pubDate else ''
+                }
+                items.append(data)
+
+        elif soup.find('feed'):
+            for entry in soup.find_all('entry'):
+                data = {
+                    'title': entry.title.text if entry.title else '',
+                    'link': entry.link['href'] if entry.link and entry.link.has_attr('href') else '',
+                    'summary': entry.summary.text if entry.summary else '',
+                    'updated': entry.updated.text if entry.updated else ''
+                }
+                items.append(data)
+
+        if not items:
+            logger.warning("Feed XML does not match RSS or Atom formats.")
         return items
+
     except Exception as e:
-        logger.error(f"Error parsing RSS XML: {e}")
+        logger.error(f"Error parsing feed XML: {e}")
         return []
 
 def fetch_rss_data(rss_url):
@@ -91,8 +102,8 @@ def fetch_rss_data(rss_url):
         response.raise_for_status()
 
         if 'xml' in response.headers.get('Content-Type', ''):
-            logger.debug(f"RSS data fetched from: {rss_url}")
-            return parse_rss_xml(response.text)
+            logger.debug(f"Feed data fetched from: {rss_url}")
+            return parse_rss_or_atom(response.text)
 
         logger.warning(f"Invalid content type for URL {rss_url}: {response.headers.get('Content-Type')}")
         return None
@@ -107,7 +118,7 @@ def fetch_all_rss_data(rss_urls):
 
 @app.route('/api', methods=['GET'])
 def get_rss_data():
-    logger.debug("Fetching RSS data...")
+    logger.debug("Fetching feed data...")
 
     rss_urls = get_rss_urls()
     if not rss_urls:
@@ -115,9 +126,11 @@ def get_rss_data():
         return jsonify({'total_items': 0, 'data': []})
 
     rss_data = fetch_all_rss_data(rss_urls)
-    logger.debug(f"Fetched and processed {len(rss_data)} RSS data entries.")
+    logger.debug(f"Fetched and processed {len(rss_data)} feed entries.")
 
-    return jsonify({'total_items': len(rss_data), 'data': rss_data})
+    flat_data = [item for sublist in rss_data for item in sublist]
+
+    return jsonify({'total_items': len(flat_data), 'data': flat_data})
 
 def create_app():
     return app
