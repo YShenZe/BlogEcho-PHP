@@ -119,10 +119,11 @@ document.addEventListener('DOMContentLoaded', function () {
             <i class="fa fa-bullhorn text-xl mr-2"></i><strong>公告: </strong>回响 - 公告 现已发布。<a href="https://blogecho.zeimg.top/announcement.html" class="underline">转到公告</a> 以了解详情。
         </div>
     </div>
-<hr/>
     <!-- 文章列表 -->
     <div class="max-w-7xl mx-auto px-4 py-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-6">
+        <h1 class="text-2xl font-semibold">成员最新文章</h1>
+        <hr/>
             <?php 
 $apiUrl = 'http://127.0.0.1:5000/api';
 $response = file_get_contents($apiUrl);
@@ -161,10 +162,8 @@ foreach ($data['data'] as $item):
             echo truncate_text($description, 150); 
             ?>
         </p>
-        <p class="text-sm text-gray-500 mt-2">
-            字数: <?php echo mb_strlen($item['description'] ?? '无描述', 'UTF-8'); ?>
-        </p>
-        <p class="text-sm text-gray-500 mt-2"><?php echo htmlspecialchars($item['pubDate'] ?? '无日期'); ?></p>
+        
+        <p class="text-sm text-gray-500 mt-2"><?php echo htmlspecialchars($item['pubDate'] ?? $item['updated'] ?? '无日期'); ?></p>
         <a href="<?php echo htmlspecialchars($item['link'] ?? '#'); ?>" target="_blank" class="mt-4 inline-block text-white bg-blue-500 hover:bg-blue-600 rounded-md py-2 px-4 transition duration-300">
             -阅读原文-
         </a>
