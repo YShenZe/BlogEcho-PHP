@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import concurrent.futures
 import os
 import logging
+from dateutil import parser  # 日期时间解析库
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False  # 确保 JSON 输出支持非 ASCII 字符
@@ -123,7 +124,20 @@ def fetch_rss_data(rss_url):
 def fetch_all_rss_data(rss_urls):
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         results = list(executor.map(fetch_rss_data, rss_urls))
-    return [result for result in results if result]
+    return [item for sublist in results if sublist for item in sublist]  # 展平嵌套列表
+
+def sort_rss_data_by_date(flat_data):
+    def get_date(item):
+        # 提取时间字段并解析为日期对象
+        date_str = item.get('pubDate') or item.get('updated')  # 优先选择存在的字段
+        try:
+            return parser.parse(date_str) if date_str else None
+        except Exception as e:
+            logger.warning(f"Failed to parse date: {date_str}, error: {e}")
+            return None
+
+    # 按时间降序排序
+    return sorted(flat_data, key=lambda x: get_date(x) or parser.parse('1970-01-01'), reverse=True)
 
 @app.route('/api', methods=['GET'])
 def get_rss_data():
@@ -137,10 +151,10 @@ def get_rss_data():
     rss_data = fetch_all_rss_data(rss_urls)
     logger.debug(f"Fetched and processed {len(rss_data)} feed entries.")
 
-    # 展平嵌套列表
-    flat_data = [item for sublist in rss_data for item in sublist]
+    # 按时间完全排序
+    sorted_data = sort_rss_data_by_date(rss_data)
 
-    return jsonify({'total_items': len(flat_data), 'data': flat_data})
+    return jsonify({'total_items': len(sorted_data), 'data': sorted_data})
 
 def create_app():
     return app
