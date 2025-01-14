@@ -8,7 +8,7 @@ import os
 import logging
 
 app = Flask(__name__)
-app.config['JSON_AS_ASCII'] = True
+app.config['JSON_AS_ASCII'] = False  # 确保 JSON 输出支持非 ASCII 字符
 
 # 设置日志级别
 logging.basicConfig(level=logging.DEBUG)
@@ -20,6 +20,7 @@ db_config = {
     'user': os.getenv('DB_USER', '数据库用户名'),
     'password': os.getenv('DB_PASSWORD', '数据库密码'),
     'database': os.getenv('DB_NAME', '数据库名'),
+    'charset': 'utf8mb4',  # 确保数据库连接使用 UTF-8
     'auth_plugin': 'mysql_native_password',
 }
 try:
@@ -64,10 +65,10 @@ def get_rss_urls():
 
 def parse_rss_or_atom(feed_xml):
     try:
-        soup = BeautifulSoup(feed_xml, 'lxml-xml')
+        soup = BeautifulSoup(feed_xml, 'lxml-xml')  # 解析 XML
         items = []
 
-        channel = soup.find('channel')
+        channel = soup.find('channel')  # 检查 RSS 格式
         if channel:
             for item in channel.find_all('item'):
                 data = {
@@ -78,7 +79,7 @@ def parse_rss_or_atom(feed_xml):
                 }
                 items.append(data)
 
-        elif soup.find('feed'):
+        elif soup.find('feed'):  # 检查 Atom 格式
             for entry in soup.find_all('entry'):
                 data = {
                     'title': entry.title.text if entry.title else '',
@@ -100,6 +101,14 @@ def fetch_rss_data(rss_url):
     try:
         response = requests.get(rss_url, timeout=10)
         response.raise_for_status()
+
+        # 设置编码
+        if 'charset' in response.headers.get('Content-Type', '').lower():
+            response.encoding = requests.utils.get_encoding_from_headers(response.headers)
+        else:
+            response.encoding = response.apparent_encoding
+
+        logger.debug(f"Fetching feed from {rss_url}, encoding detected: {response.encoding}")
 
         if 'xml' in response.headers.get('Content-Type', ''):
             logger.debug(f"Feed data fetched from: {rss_url}")
@@ -128,6 +137,7 @@ def get_rss_data():
     rss_data = fetch_all_rss_data(rss_urls)
     logger.debug(f"Fetched and processed {len(rss_data)} feed entries.")
 
+    # 展平嵌套列表
     flat_data = [item for sublist in rss_data for item in sublist]
 
     return jsonify({'total_items': len(flat_data), 'data': flat_data})
