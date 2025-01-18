@@ -11,7 +11,6 @@ from dateutil import parser  # 日期时间解析库
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False  # 确保 JSON 输出支持非 ASCII 字符
 
-# 设置日志级别
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
