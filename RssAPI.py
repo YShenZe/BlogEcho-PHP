@@ -14,7 +14,6 @@ app.config['JSON_AS_ASCII'] = False  # 确保 JSON 输出支持非 ASCII 字符
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# 配置数据库连接池
 db_config = {
     'host': os.getenv('DB_HOST', 'localhost'),
     'user': os.getenv('DB_USER', '数据库用户名'),
